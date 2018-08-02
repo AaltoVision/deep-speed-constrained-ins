@@ -32,10 +32,9 @@ class OdometryDataset(Dataset):
         self.limits.append(0)
         plot=False
         for dataset in datasets:
-            capture=data_folder+"capture"+dataset+"iphone/*.csv"
-            imu_path=subprocess.check_output('ls '+capture,shell=True)
+           
         
-            imu_path=data_folder+"capture"+dataset+"iphone/data_for_rosbag.csv"
+            imu_path=data_folder+dataset+"iphone/imu-gyro.csv"
             data = pd.read_csv(imu_path,names=list('tlabcdefghijk'))
             pos=data[data['l']==7]
             imu=data[data['l']==34]
