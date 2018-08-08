@@ -85,7 +85,7 @@ class OdometryDataset(Dataset):
                 #print(idx)
                 #print(self.limits[index])
                 dset=index
-                off=np.random.randint(low=5,high=100)
+                off=np.random.randint(low=50,high=100)
                 idx=idx-self.limits[index]+off
                 break
         
