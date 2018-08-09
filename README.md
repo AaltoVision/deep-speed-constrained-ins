@@ -25,12 +25,24 @@ do
   unzip advio-$i.zip
   rm advio-$i.zip	
 done
+cd ..
 ```
+
+Python scripts
 
 Synchronize the accelerometer and gyroscope in the ADVIO data.
 
 ```
-python python/sync-data
+cd python
+python sync-data.py
 ```
+Produce the plots in the paper
+
+```
+python DCI-training-0.0.2.py
+
+```
+
+
 
 
