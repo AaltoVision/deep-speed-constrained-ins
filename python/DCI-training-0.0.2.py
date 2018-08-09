@@ -1,9 +1,8 @@
-# Import used libraries.
+# Import  libraries.
 import torch
 import pandas as pd
 import os
 import glob
-
 import numpy as np
 import matplotlib.pyplot as plt
 from torch.utils.data import Dataset, DataLoader
@@ -13,48 +12,54 @@ import subprocess
 import time
 import csv
 
+#Import python functions.
 from dataset import OdometryDataset
 from dataset import ToTensor
-
 from model import vel_regressor
 
+
+#set options
 load_model = True
 save_model = False
 train_model= False
 
+
+#add path to used folders
+#Advio
 folders=[]
 for i in [13,15,16,17,1,2,3,5,6,8,9,10,11,12,18,19,20,21,22]:  
     path= '/advio-'+str(i).zfill(2)+'/'
-    folders.append(path)
-    
+    folders.append(path)  
+#Extra data
 folders.append("/static/dataset-01/")
 folders.append("/static/dataset-02/")
 folders.append("/static/dataset-03/")
 folders.append("/swing/dataset-01/")
-    
+
+#Load saved motion labels
 labs=[]
 with open('labels.csv', 'rb') as csvfile:
      spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
      for row in spamreader:
         labs.append([int(row[0]),int(row[1]),int(row[2]),float(row[3]),])
-#visualize labels in time vector.
 
-#control variables, initialize arrays.
+        
+#visualize labels in sample vector.
 ind=0
 acc_lab=0
 acc_dat=0
 data_labels=[]
 plt.figure(figsize=(8, 35))
 for idx, folder in enumerate(folders):
-    #print(folder)
-    
+    #Load one folder at a time
     data=OdometryDataset("../data",[folder],transform=ToTensor())
-    stay=True
+    #Skip last label from previous dataset
     while labs[ind][3]==-2:
-        ind=ind+1           
+        ind=ind+1               
+    #Find corresponding labels
     stay=True
     dat=[]   
-    dat.append([-1,0])
+    dat.append([-1,0])    
     while stay:
         tim=labs[ind][3]
         tim=np.round(np.floor(tim)*60+(tim-np.floor(tim))*100)
@@ -64,9 +69,8 @@ for idx, folder in enumerate(folders):
             tim=10000
         lab=labs[ind][2]
         dat.append([tim,lab])
-        ind=ind+1   
-    
-    #print(data_length)
+        ind=ind+1      
+    #Make label vector for each sample
     label=[]
     start=data[0]['time']
     for i in range(0,len(data)):
@@ -74,8 +78,7 @@ for idx, folder in enumerate(folders):
         for j in range(0,len(dat)-1):
             if t<dat[j+1][0] and t>dat[j][0]:
                 label.append(dat[j+1][1])
-    #print(len(data))
-    #print(len(label))
+    #plot results
     acc_dat=acc_dat+len(data)
     acc_lab=acc_lab+len(label)
     plt.subplot(23,1,idx+1)
@@ -83,29 +86,22 @@ for idx, folder in enumerate(folders):
     plt.ylim(-1,5)
     frame1 = plt.gca()
     frame1.axes.get_xaxis().set_visible(False)
-    #frame1.axes.get_yaxis().set_visible(False)
     plt.yticks([0,1,2,3,4], ['Standing','Walking','Stairs','Escalator','Elevator'])
-    plt.grid(b=True,axis='y')
-    
+    plt.grid(b=True,axis='y')   
     data_labels.append(label)
-print(ind)
-
-print(acc_dat)
-print(acc_lab)
-data=OdometryDataset("../data",folders,transform=ToTensor())
-print(len(data))
 # Create dataset reader.
 T=OdometryDataset("../data",folders,transform=ToTensor())
 # Create Model.
-model=vel_regressor(Nout=1,Nlinear=7440)
+if load_model == False:
+    model=vel_regressor(Nout=1,Nlinear=7440)
+
 l=[]
 val=[]
 
-#print(np.shape(velo))
+#plot velocity and speed.
 velo=[]
 sp=[]
 t=[]
-#print(np.shape(velo))
 index=(np.round(np.linspace(0,len(T),1000)))
 for i in index:
     #print(i)
@@ -144,8 +140,8 @@ ordered_Loader = DataLoader(T, batch_size=1,shuffle=False, num_workers=1)
 #define optimizer.
 optimizer = torch.optim.Adam(model.parameters(), lr = learning_rate)
 
+# Train model
 if train_model:
-
     # Epochs
     for t in range(100):
         ti = time.time()
@@ -205,14 +201,12 @@ pred=[]
 sp=[]
 for i_batch, sample_batched in enumerate(ordered_Loader):
     data=sample_batched
-
     pred.append(model(Variable(data['imu'].float())).data[0].numpy())
-
     vec=data['gt']
-
     y=torch.norm(data['gt'],2,1).type(torch.FloatTensor)
     sp.append(y.type(torch.FloatTensor).numpy())
-        
+
+# Plot prediction and ground truth.
 print(np.shape((np.asarray(sp))))
 plt.subplot(211)
 plt.plot(np.asarray(pred)[:,:])
@@ -221,18 +215,14 @@ plt.title('Prediction')
 plt.subplot(212)
 plt.plot(np.asarray(sp)[:,0])
 plt.ylabel('ground truth speed')
-
-
-
 pred=np.asarray(pred)
 sp=np.asarray(sp)
-
 dat_lab=[]
 for label in data_labels:
     dat_lab=dat_lab+label
 
 
-
+#Plot scatter of prediction and ground truth with labels.
 pred=[]
 sp=[]
 R=[]
@@ -240,14 +230,9 @@ for i_batch, sample_batched in enumerate(ordered_Loader):
     data=sample_batched
     pred.append(model(Variable(data['imu'].float())).data[0].numpy())
     vec=data['gt']
-    #vertical=torch.norm(vec[:,[1]],2,1) 
-    #vertical=vec[:,[1]]
-    #horizontal=torch.norm(vec[:,[0,2]],2,1)  
-    #y=torch.stack((vertical,horizontal),1)
     y=torch.norm(data['gt'],2,1).type(torch.FloatTensor)
     sp.append(y.type(torch.FloatTensor).numpy())
     R.append(np.array(data['range']))
-    #print(R[-1])
 print(len(dat_lab))
 print(len(sp))
 pred=np.asarray(pred)
@@ -264,6 +249,7 @@ Rwalk=[]
 Resc=[]
 Rele=[]
 
+#Separte by label
 for i in range(0,len(dat_lab)):
     if dat_lab[i]==0:
         stat.append([sp[i,0],pred[i]])
@@ -280,15 +266,9 @@ for i in range(0,len(dat_lab)):
     else:
         ele.append([sp[i,0],pred[i]])
         Rele.append(R[i])
-
-
-print(len(dat_lab))
-print(len(sp))
-
-
 msize=3
 plt.figure(figsize=(8,8))
-
+#Scatter plot.
 test=np.array(stat)
 plt.plot(test[:,0],test[:,1],'r.',label='static',markersize=msize)
 test=np.array(stair)
@@ -304,8 +284,8 @@ plt.plot([0,1.5],[0,1.5],'k')
 plt.xlabel('gt (m/s)')
 plt.ylabel('prediction (m/s)')
 
+#plot histograms by label
 axes=plt.gca()
-
 axes.set_xlim((0.0,1.5))
 axes.set_ylim([0.0,1.5])
 axes.legend()
