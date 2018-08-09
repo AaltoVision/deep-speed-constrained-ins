@@ -14,6 +14,23 @@ Requirements:
 
 To produce paper figures:
 
-Go trough the cells in  DCI-training-0.0.2.ipynb, by default the script loads a pretrained model and evaluates the performance.
+Download and unzip ADVIO dataset files
+[ADVIO](https://github.com/AaltoVision/ADVIO)
+
+```
+cd data
+for i in $(seq -f "%02g" 1 23);
+do
+  wget -O advio-$i.zip https://zenodo.org/record/1321157/files/advio-$i.zip
+  unzip advio-$i.zip
+  rm advio-$i.zip	
+done
+```
+
+Synchronize the accelerometer and gyroscope in the ADVIO data.
+
+```
+python python/sync-data
+```
 
 
