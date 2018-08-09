@@ -1,18 +1,20 @@
-# deep-speed-constrained-ins
+# Deep Learning Based Speed Estimation for Constraining Strapdown Inertial Navigation on Smartphones
 
-Strapdown inertial navigation systems are sensitive to the quality of the data provided by the accelerometer and gyroscope. Low-grade IMUs in handheld smart-devices pose a problem for inertial odometry on these devices. We propose a scheme for constraining the inertial odometry problem by complementing non-linear state estimation by a CNN-based deep-learning model for inferring the momentary speed based on a window of IMU samples. We show the feasibility of the model using a wide range of data from an iPhone, and present proof-of-concept results for how the model can be combined with an inertial navigation system for three-dimensional inertial navigation.
+![alt text](fig/figure.png)
 
-Requirements:
+## Sumary
 
-* Python 2
-* pytorch
-* pandas
-* numpy
-* Matplotlib
-* numpy
-* Jupyter notebook
+Strapdown inertial navigation systems are sensitive to the quality of the data provided by the accelerometer and gyroscope. Low-grade IMUs in handheld smart-devices pose a problem for inertial odometry on these devices. We propose a scheme for constraining the inertial odometry problem by complementing non-linear state estimation by a CNN-based deep-learning model for inferring the momentary speed based on a window of IMU samples.
 
-To produce paper figures:
+## Dependencies:
+
+Ubuntu 16.04 an python 2.7 (including numpy and matplotlib) were used in all the tests.
+
+The following Python packages were also used
+* [pytorch](https://pytorch.org/) (0.3)
+* [pandas](https://pandas.pydata.org/) (0.23)
+
+## Download and prepare training data
 
 Download and unzip ADVIO dataset files
 [ADVIO](https://github.com/AaltoVision/ADVIO)
@@ -27,22 +29,22 @@ do
 done
 cd ..
 ```
-
-Python scripts
-
 Synchronize the accelerometer and gyroscope in the ADVIO data.
 
 ```
 cd python
 python sync-data.py
 ```
-Produce the plots in the paper
+
+## Produce results
 
 ```
+cd python
 python DCI-training-0.0.2.py
 
 ```
 
+License
+--
 
-
-
+This software is distributed under the GNU General Public License (version 3 or later); please refer to the file `LICENSE.txt`, included with the software, for details. 
