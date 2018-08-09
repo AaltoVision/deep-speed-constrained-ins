@@ -44,7 +44,11 @@ python DCI-training-0.0.2.py
 
 ```
 
-License
---
+## References
+
+[1] Santiago Cortés, Arno Solin, and Juho Kannala, “Deep Learning Based Speed Estimation for Constraining Strapdown Inertial Navigation on Smartphones”, IEEE International Workshop on Machine Learning for Signal Processing (MLSP), Aalborg, Denmark, 2018.
+
+
+## License
 
 This software is distributed under the GNU General Public License (version 3 or later); please refer to the file `LICENSE.txt`, included with the software, for details. 
