@@ -1,8 +1,17 @@
-# Import  libraries.
+# Example Implementation
+#
+# Description:
+#   train and test DCI network.
+#
+# Copyright (C) 2018 Santiago Cortes
+#
+# This software is distributed under the GNU General Public 
+# Licence (version 2 or later); please refer to the file 
+# Licence.txt, included with the software, for details.
+
 import torch
 import pandas as pd
 import os
-import glob
 import numpy as np
 import matplotlib.pyplot as plt
 from torch.utils.data import Dataset, DataLoader
@@ -194,6 +203,7 @@ if train_model:
 #save model
 if save_model:
     torch.save(model,'./full.pt')
+    
 # Load corresponding prediction and ground truth
 pred=[]
 sp=[]
