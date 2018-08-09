@@ -92,7 +92,12 @@ for idx, folder in enumerate(folders):
 # Create dataset reader.
 T=OdometryDataset("../data",folders,transform=ToTensor())
 # Create Model.
-if load_model == False:
+    plt.show()
+#load pretrained model.
+if load_model:
+    #model = torch.load('./full.pt')
+    model= torch.load('./full.pt', map_location=lambda storage, loc: storage)
+else:
     model=vel_regressor(Nout=1,Nlinear=7440)
 
 l=[]
@@ -186,11 +191,6 @@ if train_model:
     # Plot loss
     plt.plot(np.log(np.array(l)),label = 'Training loss')
     plt.plot(np.log(np.array(val)),label = 'Validation loss')
-    plt.show()
-#load pretrained model.
-if load_model:
-    #model = torch.load('./full.pt')
-    model= torch.load('./full.pt', map_location=lambda storage, loc: storage)
     
 
 #save model
