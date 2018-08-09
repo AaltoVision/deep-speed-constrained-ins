@@ -91,11 +91,10 @@ for idx, folder in enumerate(folders):
     data_labels.append(label)
 # Create dataset reader.
 T=OdometryDataset("../data",folders,transform=ToTensor())
-# Create Model.
-    plt.show()
-#load pretrained model.
+
+    
+#load pretrained model or create new one.
 if load_model:
-    #model = torch.load('./full.pt')
     model= torch.load('./full.pt', map_location=lambda storage, loc: storage)
 else:
     model=vel_regressor(Nout=1,Nlinear=7440)
@@ -109,7 +108,6 @@ sp=[]
 t=[]
 index=(np.round(np.linspace(0,len(T),1000)))
 for i in index:
-    #print(i)
     data=T[int(i)]
     velo.append(data['gt'].numpy())
     sp.append((data['gt'].norm()))
