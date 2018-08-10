@@ -1,12 +1,16 @@
+# Deep Learning Based Speed Estimation for Constraining Strapdown Inertial Navigation on Smartphones
+
+[Santiago Cortés](https://research.aalto.fi/portal/santiago.cortesreina.html) · [Arno Solin](http://arno.solin.fi) · [Juho Kannala](https://users.aalto.fi/~kannalj1/) 
+
 ## Sumary
 
 Strapdown inertial navigation systems are sensitive to the quality of the data provided by the accelerometer and gyroscope. Low-grade IMUs in handheld smart-devices pose a problem for inertial odometry on these devices. We propose a scheme for constraining the inertial odometry problem by complementing non-linear state estimation by a CNN-based deep-learning model for inferring the momentary speed based on a window of IMU samples.
 
-![alt text](fig/figure.png)
+This repository provides the codes for replicationg the speed regression setup in [1]. Please, if you use this code/data, please cite the original paper presenting it.
 
 ## Dependencies:
 
-Ubuntu 16.04 an python 2.7 (including numpy and matplotlib) were used in all the tests.
+Ubuntu 16.04 and python 2.7 (including numpy and matplotlib) were used in all the tests.
 
 The following Python packages were also used
 * [pytorch](https://pytorch.org/) (0.3)
@@ -14,10 +18,10 @@ The following Python packages were also used
 
 ## Download and prepare training data
 
-Download and unzip ADVIO dataset files
-[ADVIO](https://github.com/AaltoVision/ADVIO)
+Download and unzip ADVIO dataset files (see 
+[ADVIO](https://github.com/AaltoVision/ADVIO)).
 
-```
+```bash
 cd data
 for i in $(seq -f "%02g" 1 23);
 do
@@ -29,20 +33,24 @@ cd ..
 ```
 Synchronize the accelerometer and gyroscope in the ADVIO data.
 
-```
+```bash
 cd python
 python sync-data.py
 ```
 
 ## Produce results
 
-```
+```bash
 cd python
 python DCI-training-0.0.2.py
 
 ```
 
-License
---
+## References
+
+[1] Santiago Cortés, Arno Solin, and Juho Kannala, “Deep Learning Based Speed Estimation for Constraining Strapdown Inertial Navigation on Smartphones”, *IEEE International Workshop on Machine Learning for Signal Processing (MLSP)*, Aalborg, Denmark, 2018.
+
+
+## License
 
 This software is distributed under the GNU General Public License (version 3 or later); please refer to the file `LICENSE.txt`, included with the software, for details. 
