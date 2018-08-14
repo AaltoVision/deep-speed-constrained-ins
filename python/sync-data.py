@@ -1,4 +1,4 @@
-# Synchronize the quaternion and gyroscope data  
+# Synchronize the accelerometer and gyroscope data  
 #
 # Description:
 #   Create data structure containing IMU and ARKit data.
