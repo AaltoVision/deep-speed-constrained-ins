@@ -11,5 +11,5 @@ This repository provides the codes for replicationg the speed regression setup i
 
 ## Referencing
 
-[1] Santiago Cortés, Arno Solin, and Juho Kannala, “Deep Learning Based Speed Estimation for Constraining Strapdown Inertial Navigation on Smartphones”, *IEEE International Workshop on Machine Learning for Signal Processing (MLSP)*, Aalborg, Denmark, 2018.
+[1] Santiago Cortés, Arno Solin, and Juho Kannala, “Deep Learning Based Speed Estimation for Constraining Strapdown Inertial Navigation on Smartphones”, *IEEE International Workshop on Machine Learning for Signal Processing (MLSP)*, Aalborg, Denmark, 2018. [[arXiv]](https://arxiv.org/abs/1808.03485)
 
